@@ -6,11 +6,14 @@ Requires at least: 2.2.3
 Tested up to: 2.3
 Stable tag: 1.0
 
-This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the page navigation that users see on your site.
+This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
+page navigation that users see on your site.
 
 == Description ==
 
-This plugin adds a checkbox, “include this page in menus”, which is checked by default. If you uncheck it, the page will not appear in any listings of pages (which includes, and is *usually* limited to, your page navigation menus).
+This plugin adds a checkbox, “include this page in menus”, which is checked by default. If you uncheck 
+it, the page will not appear in any listings of pages (which includes, and is *usually* limited to, your 
+page navigation menus).
 
 == Installation ==
 

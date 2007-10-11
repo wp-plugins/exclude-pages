@@ -17,7 +17,7 @@ page navigation menus).
 
 == Installation ==
 
-1. Upload `tinymce_excerpt.php` to the `/wp-content/plugins/` directory
+1. Upload `exclude_pages.php` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Edit a post and enjoy the new rich styles in your excerpts
 

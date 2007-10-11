@@ -1,4 +1,4 @@
-=== Last.FM Events ===
+=== Exclude Pages ===
 Contributors: simonwheatley
 Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
 Tags: get_pages, navigation, menu, exclude pages, hide pages

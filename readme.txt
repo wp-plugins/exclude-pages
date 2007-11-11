@@ -1,0 +1,32 @@
+=== Exclude Pages ===
+Contributors: simonwheatley
+Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
+Tags: get_pages, navigation, menu, exclude pages, hide pages
+Requires at least: 2.2.3
+Tested up to: 2.3
+Stable tag: 1.1
+
+This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
+page navigation that users see on your site.
+
+== Change Log ==
+
+= v1.1 2007/11/10 =
+
+* Fix: Pages not created manually using "Write Page" were always excluded from the navigation, meaning the admin has to edit the page to manually include them. Pages created by other plugins are not always included in the navigation, if you want to exclude them (a less common scenario) you have to edit them and uncheck the box. ([Reported by Nudnik](http://wordpress.org/support/topic/140017 "Wordpress forum topic"))
+
+== Description ==
+
+This plugin adds a checkbox, “include this page in menus”, which is checked by default. If you uncheck 
+it, the page will not appear in any listings of pages (which includes, and is *usually* limited to, your 
+page navigation menus).
+
+== Installation ==
+
+1. Upload `exclude_pages.php` to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Edit a post and enjoy the new rich styles in your excerpts
+
+== Screenshots ==
+
+1. Showing the control on the editing screen to exclude a page from the navigation

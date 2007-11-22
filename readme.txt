@@ -13,7 +13,7 @@ page navigation that users see on your site.
 
 = v1.2 2007/11/21 =
 
-* Enhancement: Child pages of an excluded page are now also hidden. There is also a warning message in the edit screen for a child page with a hidden ancestor, informing the editor that the page is effectively hidden and a link to edit the ancestor which is affecting the child page.
+* Enhancement: Child pages of an excluded page are now also hidden. There is also a warning message in the edit screen for any child page with a hidden ancestor, informing the person editing that the page is effectively hidden; a link is provided to edit the ancestor affecting the child page.
 
 = v1.1 2007/11/10 =
 
@@ -33,7 +33,7 @@ in this way.)
 
 1. Upload `exclude_pages.php` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Edit a post and enjoy the new rich styles in your excerpts
+1. Create or edit a page, and enjoy the frisson of excitement as you exclude it from the navigation
 
 == Screenshots ==
 

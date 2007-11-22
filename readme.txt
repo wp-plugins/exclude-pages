@@ -3,13 +3,17 @@ Contributors: simonwheatley
 Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
 Tags: get_pages, navigation, menu, exclude pages, hide pages
 Requires at least: 2.2.3
-Tested up to: 2.3
-Stable tag: 1.1
+Tested up to: 2.3.1
+Stable tag: 1.2
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
 page navigation that users see on your site.
 
 == Change Log ==
+
+= v1.2 2007/11/21 =
+
+* Enhancement: Child pages of an excluded page are now also hidden. There is also a warning message in the edit screen for a child page with a hidden ancestor, informing the editor that the page is effectively hidden and a link to edit the ancestor which is affecting the child page.
 
 = v1.1 2007/11/10 =
 
@@ -21,6 +25,10 @@ This plugin adds a checkbox, “include this page in menus”, which is checked 
 it, the page will not appear in any listings of pages (which includes, and is *usually* limited to, your 
 page navigation menus).
 
+Pages which are children of excluded pages also do not show up in menu listings. (An alert in the editing screen, 
+underneath the "include" checkbox allows you to track down which ancestor page is affecting child pages 
+in this way.)
+
 == Installation ==
 
 1. Upload `exclude_pages.php` to the `/wp-content/plugins/` directory
@@ -30,3 +38,4 @@ page navigation menus).
 == Screenshots ==
 
 1. Showing the control on the editing screen to exclude a page from the navigation
+2. Showing the control and warning for a page which is the child of an excluded page

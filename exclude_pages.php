@@ -3,7 +3,7 @@
 Plugin Name: Exclude Pages from Navigation
 Plugin URI: http://www.simonwheatley.co.uk/wordpress-plugins/exclude-pages/
 Description: Provides a checkbox on the editing page which you can check to exclude pages from the primary navigation. IMPORTANT NOTE: This will remove the pages from any "consumer" side page listings, which may not be limited to your page navigation listings.
-Version: 1.1
+Version: 1.2
 Author: Simon Wheatley
 
 Copyright 2007 Simon Wheatley
@@ -32,23 +32,73 @@ define('EP_OPTION_NAME', 'ep_exclude_pages');
 define('EP_OPTION_SEP', ',');
 
 // Take the pages array, and return the pages array without the excluded pages
-function ep_exclude_pages( $pages )
+function ep_exclude_pages( & $pages )
 {
 	$excluded_ids = ep_get_excluded_ids();
 	$length = count($pages);
+	// Ensure we catch all descendant pages, so that if a parent
+	// is hidden, it's children are too.
 	for ( $i=0; $i<$length; $i++ ) {
 		$page = & $pages[$i];
-		if ( in_array($page->ID, $excluded_ids ) ) {
+		// If one of the ancestor pages is excluded, add it to our exclude array
+		if ( ep_ancestor_excluded( $page, $excluded_ids, $pages ) ) {
+			// Can't actually delete the pages at the moment, 
+			// it'll screw with our recursive search.
+			// For the moment, just tag the ID onto our excluded IDs
+			$excluded_ids[] = $page->ID;
+		}
+	}
+
+	// Ensure the array only has unique values
+	$delete_ids = array_unique( $excluded_ids );
+	
+	// Loop though the $pages array and actually unset/delete stuff
+	for ( $i=0; $i<$length; $i++ ) {
+		$page = & $pages[$i];
+		// If one of the ancestor pages is excluded, add it to our exclude array
+		if ( in_array( $page->ID, $delete_ids ) ) {
+			// Finally, delete something(s)
 			unset( $pages[$i] );
 		}
 	}
+
 	// Reindex the array, for neatness
 	// SWFIXME: Is reindexing the array going to create a memory optimisation problem for large arrays of WP post/page objects?
 	$pages = array_values( $pages );
+
 	return $pages;
 }
 
-// Is this page currently NOT excluded,
+// Recurse down an ancestor chain, checking if one is excluded
+// Returns the ID of the "nearest" excluded ancestor
+function ep_ancestor_excluded( & $page, & $excluded_ids, & $pages )
+{
+	$parent = & ep_get_page( $page->post_parent, $pages );
+	// Is it excluded?
+	if ( in_array( $parent->ID, $excluded_ids ) ) {
+		return $parent->ID;
+	}
+	// Is it the homepage?
+	if ( $parent->ID == 0 ) return false;
+	// Otherwise we have another ancestor to check
+	return ep_ancestor_excluded( $parent->ID, $excluded_ids, $pages );
+}
+
+// Return the portion of the $pages array which refers to the ID passed as $page_id
+function ep_get_page( $page_id, & $pages )
+{
+	// PHP 5 would be much nicer here, we could use foreach by reference, ah well.
+	$length = count($pages);
+	for ( $i=0; $i<$length; $i++ ) {
+		$page = & $pages[$i];
+		if ( $page->ID == $page_id ) return $page;
+	}
+	// Unusual.
+	return false;
+}
+
+// Is this page we're editing (defined by global $post_ID var) 
+// currently NOT excluded (i.e. included),
 // returns true if NOT excluded (i.e. included)
 // returns false is it IS excluded.
 // (Tricky this upside down flag business.)
@@ -63,7 +113,24 @@ function ep_include_this_page()
 	// Check if our page is in the exclusion array
 	// The bang (!) reverses the polarity [1] of the boolean
 	return ! in_array( $post_ID, $excluded_ids );
-	// [1] (of the neutron flow)
+	// fn1. (of the neutron flow, ahem)
+}
+
+// Check the ancestors for the page we're editing (defined by 
+// global $post_ID var), return the ID if the nearest one which
+// is excluded (if any);
+function ep_nearest_excluded_ancestor()
+{
+	global $post_ID, $wpdb;
+	// New post? No problem.
+	if ( ! $post_ID ) return false;
+	$excluded_ids = ep_get_excluded_ids();
+	// Manually get all the pages, to avoid our own filter.
+	$sql = "SELECT ID, post_parent FROM $wpdb->posts WHERE post_type = 'page'";
+	$pages = $wpdb->get_results( $sql );
+	// Start recursively checking the ancestors
+	$parent = ep_get_page( $post_ID, $pages );
+	return ep_ancestor_excluded( $parent, $excluded_ids, $pages );
 }
 
 function ep_get_excluded_ids()
@@ -122,24 +189,36 @@ function ep_set_option( $name, $value, $description )
 // Add some HTML for the DBX sidebar control into the edit page page
 function ep_admin_sidebar()
 {
-	echo <<<END
-		<fieldset id="excludepagediv" class="dbx-box">
-		<h3 class="dbx-handle">Navigation</h3>
-		<div class="dbx-content">
-		<label for="ep_include_this_page" class="selectit">
-		<input 
-			type="checkbox" 
-			name="ep_include_this_page" 
-			id="ep_include_this_page" 
-END;
-		if ( ep_include_this_page() ) echo 'checked="checked"';
-		echo <<<END
- />
-			Include this page in menus</label>
-		<input type="hidden" name="ep_ctrl_present" value="1" />
-		</div>
-		</fieldset>
-END;
+	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
+	error_log( "Nearest: " . $nearest_excluded_ancestor );
+	if ( $nearest_excluded_ancestor === false ) error_log("FALSE");
+	echo '	<fieldset id="excludepagediv" class="dbx-box">';
+	echo '		<h3 class="dbx-handle">'.__('Navigation').'</h3>';
+	echo '		<div class="dbx-content">';
+	echo '		<label for="ep_include_this_page" class="selectit">';
+	echo '		<input ';
+	echo '			type="checkbox" ';
+	echo '			name="ep_include_this_page" ';
+	echo '			id="ep_include_this_page" ';
+	if ( ep_include_this_page() ) echo 'checked="checked"';
+	echo ' />';
+	echo '			'.__('Include this page in menus').'</label>';
+	echo '		<input type="hidden" name="ep_ctrl_present" value="1" />';
+	if ( $nearest_excluded_ancestor !== false ) {
+		echo '<div class="exclude_alert">';
+		echo __('An ancestor of this page is excluded, so this page is too. ');
+		echo '<a href="http://wordpress.test.site/wp-admin/page.php?action=edit&amp;post='.$nearest_excluded_ancestor.'"';
+		echo ' title="'.__('edit the excluded ancestor').'">'.__('Edit ancestor').'</a>.</div>';
+	}
+	echo '	</div></fieldset>';
+}
+
+// Add some CSS into the HEAD element of the admin area
+function ep_admin_css()
+{
+	echo '	<style type="text/css" media="screen">';
+	echo '		div.exclude_alert { font-size: 11px; }';
+	echo '	</style>';
 }
 
 // Add our ctrl to the list of controls which AREN'T hidden
@@ -162,6 +241,9 @@ add_action('save_post', 'ep_update_exclusions');
 // the admin side must use another function to get the pages. So we're safe to
 // remove these pages every time.)
 add_filter('get_pages','ep_exclude_pages');
+
+// Add some CSS to the admin header
+add_action('admin_head', 'ep_admin_css');
 
 // Call this function on our very own hec_show_dbx filter
 // This filter is harmless to add, even if we don't have the 

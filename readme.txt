@@ -9,6 +9,13 @@ Stable tag: 1.2
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
 page navigation that users see on your site.
 
+== Description ==
+
+This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
+page navigation that users see on your site.
+
+Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
+
 == Change Log ==
 
 = v1.2 2007/11/21 =

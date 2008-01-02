@@ -81,7 +81,7 @@ function ep_ancestor_excluded( & $page, & $excluded_ids, & $pages )
 	// Is it the homepage?
 	if ( $parent->ID == 0 ) return false;
 	// Otherwise we have another ancestor to check
-	return ep_ancestor_excluded( $parent->ID, $excluded_ids, $pages );
+	return ep_ancestor_excluded( $parent, $excluded_ids, $pages );
 }
 
 // Return the portion of the $pages array which refers to the ID passed as $page_id
@@ -190,8 +190,6 @@ function ep_set_option( $name, $value, $description )
 function ep_admin_sidebar()
 {
 	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
-	error_log( "Nearest: " . $nearest_excluded_ancestor );
-	if ( $nearest_excluded_ancestor === false ) error_log("FALSE");
 	echo '	<fieldset id="excludepagediv" class="dbx-box">';
 	echo '		<h3 class="dbx-handle">'.__('Navigation').'</h3>';
 	echo '		<div class="dbx-content">';
@@ -207,7 +205,7 @@ function ep_admin_sidebar()
 	if ( $nearest_excluded_ancestor !== false ) {
 		echo '<div class="exclude_alert">';
 		echo __('An ancestor of this page is excluded, so this page is too. ');
-		echo '<a href="http://wordpress.test.site/wp-admin/page.php?action=edit&amp;post='.$nearest_excluded_ancestor.'"';
+		echo '<a href="page.php?action=edit&amp;post='.$nearest_excluded_ancestor.'"';
 		echo ' title="'.__('edit the excluded ancestor').'">'.__('Edit ancestor').'</a>.</div>';
 	}
 	echo '	</div></fieldset>';

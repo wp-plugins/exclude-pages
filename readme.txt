@@ -18,13 +18,19 @@ Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
 
 == Change Log ==
 
+= v1.3 2008/01/02 =
+
+* FIXED: Descendant (e.g. child) pages were only being checked to a depth of 1 generation.
+* FIXED: The link to visit the hidden ancestor page from an affected descendant page was hard-coded to my development blog URL. ([Reported by webdragon777](http://wordpress.org/support/topic/147689?replies=1#post-662909 "Wordpress forum topic"))
+* FIXED: Stripped out some stray error logging code.
+
 = v1.2 2007/11/21 =
 
-* Enhancement: Child pages of an excluded page are now also hidden. There is also a warning message in the edit screen for any child page with a hidden ancestor, informing the person editing that the page is effectively hidden; a link is provided to edit the ancestor affecting the child page.
+* ENHANCEMENT: Child pages of an excluded page are now also hidden. There is also a warning message in the edit screen for any child page with a hidden ancestor, informing the person editing that the page is effectively hidden; a link is provided to edit the ancestor affecting the child page.
 
 = v1.1 2007/11/10 =
 
-* Fix: Pages not created manually using "Write Page" were always excluded from the navigation, meaning the admin has to edit the page to manually include them. Pages created by other plugins are not always included in the navigation, if you want to exclude them (a less common scenario) you have to edit them and uncheck the box. ([Reported by Nudnik](http://wordpress.org/support/topic/140017 "Wordpress forum topic"))
+* FIXED: Pages not created manually using "Write Page" were always excluded from the navigation, meaning the admin has to edit the page to manually include them. Pages created by other plugins are not always included in the navigation, if you want to exclude them (a less common scenario) you have to edit them and uncheck the box. ([Reported by Nudnik](http://wordpress.org/support/topic/140017 "Wordpress forum topic"))
 
 == Description ==
 

@@ -4,7 +4,7 @@ Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
 Tags: get_pages, navigation, menu, exclude pages, hide pages
 Requires at least: 2.2.3
 Tested up to: 2.5
-Stable tag: 1.3
+Stable tag: 1.4
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
 page navigation that users see on your site.
@@ -17,6 +17,11 @@ page navigation that users see on your site.
 Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
 
 == Change Log ==
+
+= v1.4 2008/01/02 =
+
+* ENHANCEMENT: Now compatible with WP 2.5
+* FIX: Pages are also excluded from the "Front page displays:" > "Posts page:" admin menu. (Reported by Ed Foley) This plugin now checks if it's within the admin area, and does nothing if it is.
 
 = v1.3 2008/01/02 =
 
@@ -42,11 +47,11 @@ Pages which are children of excluded pages also do not show up in menu listings.
 underneath the "include" checkbox allows you to track down which ancestor page is affecting child pages 
 in this way.)
 
-== Requests ==
+== Requests & Bug Reports ==
 
-I'm simply noting requests here, I've not necessarily looked into how possible any of these are or how much effort they might require.
+I'm simply noting requests & bug reports here, I've not necessarily looked into any of these.
 
-* BUG REPORT: Pages are also excluded from the "Front page displays:" > "Posts page:" admin menu. (Reported by Ed Foley)
+*None!*
 
 == Installation ==
 
@@ -56,5 +61,7 @@ I'm simply noting requests here, I've not necessarily looked into how possible a
 
 == Screenshots ==
 
-1. Showing the control on the editing screen to exclude a page from the navigation
-2. Showing the control and warning for a page which is the child of an excluded page
+1. WP 2.5 - Showing the control on the editing screen to exclude a page from the navigation
+2. WP 2.5 - Showing the control and warning for a page which is the child of an excluded page
+3. Pre WP 2.5 - Showing the control on the editing screen to exclude a page from the navigation
+4. Pre WP 2.5 - Showing the control and warning for a page which is the child of an excluded page

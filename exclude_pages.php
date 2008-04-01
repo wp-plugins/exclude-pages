@@ -32,8 +32,16 @@ define('EP_OPTION_NAME', 'ep_exclude_pages');
 define('EP_OPTION_SEP', ',');
 
 // Take the pages array, and return the pages array without the excluded pages
+// Doesn't do this when in the admin area
 function ep_exclude_pages( & $pages )
 {
+	// If the URL includes "wp-admin", just return the unaltered list
+	// This constant, WP_ADMIN, only came into WP on 2007-12-19 17:56:16 rev 6412, i.e. not something we can rely upon unfortunately.
+	// May as well check it though.
+	if ( defined( 'WP_ADMIN' ) && WP_ADMIN == true ) return $pages;
+	// Fall back to checking the URL... let's hope they haven't got a page called wp-admin (probably not)
+	// SWTODO: Actually, you can create a page with an address of wp-admin (which is then inaccessible), I consider this a bug in WordPress (which I may file a report for, and patch, another time).
+	if ( strpos( $_SERVER[ 'PHP_SELF' ], 'wp-admin' ) !== false ) return $pages;
 	$excluded_ids = ep_get_excluded_ids();
 	$length = count($pages);
 	// Ensure we catch all descendant pages, so that if a parent

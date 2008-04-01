@@ -42,6 +42,12 @@ Pages which are children of excluded pages also do not show up in menu listings.
 underneath the "include" checkbox allows you to track down which ancestor page is affecting child pages 
 in this way.)
 
+== Requests ==
+
+I'm simply noting requests here, I've not necessarily looked into how possible any of these are or how much effort they might require.
+
+* BUG REPORT: Pages are also excluded from the "Front page displays:" > "Posts page:" admin menu. (Reported by Ed Foley)
+
 == Installation ==
 
 1. Upload `exclude_pages.php` to the `/wp-content/plugins/` directory

@@ -3,7 +3,7 @@ Contributors: simonwheatley
 Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
 Tags: get_pages, navigation, menu, exclude pages, hide pages
 Requires at least: 2.2.3
-Tested up to: 2.3.1
+Tested up to: 2.5
 Stable tag: 1.3
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
@@ -41,6 +41,12 @@ page navigation menus).
 Pages which are children of excluded pages also do not show up in menu listings. (An alert in the editing screen, 
 underneath the "include" checkbox allows you to track down which ancestor page is affecting child pages 
 in this way.)
+
+== Requests ==
+
+I'm simply noting requests here, I've not necessarily looked into how possible any of these are or how much effort they might require.
+
+* BUG REPORT: Pages are also excluded from the "Front page displays:" > "Posts page:" admin menu. (Reported by Ed Foley)
 
 == Installation ==
 

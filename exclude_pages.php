@@ -3,7 +3,7 @@
 Plugin Name: Exclude Pages from Navigation
 Plugin URI: http://www.simonwheatley.co.uk/wordpress-plugins/exclude-pages/
 Description: Provides a checkbox on the editing page which you can check to exclude pages from the primary navigation. IMPORTANT NOTE: This will remove the pages from any "consumer" side page listings, which may not be limited to your page navigation listings.
-Version: 1.2
+Version: 1.4
 Author: Simon Wheatley
 
 Copyright 2007 Simon Wheatley
@@ -102,7 +102,7 @@ function ep_get_page( $page_id, & $pages )
 // returns true if NOT excluded (i.e. included)
 // returns false is it IS excluded.
 // (Tricky this upside down flag business.)
-function ep_include_this_page()
+function ep_this_page_included()
 {
 	global $post_ID;
 	// New post? Must be included then.
@@ -151,7 +151,7 @@ function ep_get_excluded_ids()
 function ep_update_exclusions( $post_ID )
 {
 	// Bang (!) to reverse the polarity of the boolean, turning include into exclude
-	$exclude_this_page = ! (bool) $_POST['ep_include_this_page'];
+	$exclude_this_page = ! (bool) $_POST['ep_this_page_included'];
 	// SWTODO: Also check for a hidden var, which confirms that this checkbox was present
 	// If hidden var not present, then default to including the page in the nav (i.e. bomb out here rather
 	// than add the page ID to the list of IDs to exclude)
@@ -186,6 +186,7 @@ function ep_set_option( $name, $value, $description )
 	add_option($name, $value, $description);
 }
 
+// Pre WP2.5
 // Add some HTML for the DBX sidebar control into the edit page page
 function ep_admin_sidebar()
 {
@@ -193,12 +194,12 @@ function ep_admin_sidebar()
 	echo '	<fieldset id="excludepagediv" class="dbx-box">';
 	echo '		<h3 class="dbx-handle">'.__('Navigation').'</h3>';
 	echo '		<div class="dbx-content">';
-	echo '		<label for="ep_include_this_page" class="selectit">';
+	echo '		<label for="ep_this_page_included" class="selectit">';
 	echo '		<input ';
 	echo '			type="checkbox" ';
-	echo '			name="ep_include_this_page" ';
-	echo '			id="ep_include_this_page" ';
-	if ( ep_include_this_page() ) echo 'checked="checked"';
+	echo '			name="ep_this_page_included" ';
+	echo '			id="ep_this_page_included" ';
+	if ( ep_this_page_included() ) echo 'checked="checked"';
 	echo ' />';
 	echo '			'.__('Include this page in menus').'</label>';
 	echo '		<input type="hidden" name="ep_ctrl_present" value="1" />';
@@ -211,11 +212,42 @@ function ep_admin_sidebar()
 	echo '	</div></fieldset>';
 }
 
+// Post WP 2.5
+// Add some HTML below the submit box
+function ep_admin_sidebar_wp25()
+{
+	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
+	echo '	<div id="excludepagediv" class="new-admin-wp25">';
+	echo '		<div class="outer"><div class="inner">';
+	echo '		<label for="ep_this_page_included" class="selectit">';
+	echo '		<input ';
+	echo '			type="checkbox" ';
+	echo '			name="ep_this_page_included" ';
+	echo '			id="ep_this_page_included" ';
+	if ( ep_this_page_included() ) echo 'checked="checked"';
+	echo ' />';
+	echo '			'.__('Include this page in user menus').'</label>';
+	echo '		<input type="hidden" name="ep_ctrl_present" value="1" />';
+	if ( $nearest_excluded_ancestor !== false ) {
+		echo '<div class="exclude_alert"><em>';
+		echo __('N.B. An ancestor of this page is excluded, so this page is too. ');
+		echo '<a href="page.php?action=edit&amp;post='.$nearest_excluded_ancestor.'"';
+		echo ' title="'.__('edit the excluded ancestor').'">'.__('Edit ancestor').'</a>.</em></div>';
+	}
+	echo '	</div><!-- .inner --></div><!-- .outer -->';
+	echo '	</div><!-- #excludepagediv -->';
+}
+
+
 // Add some CSS into the HEAD element of the admin area
 function ep_admin_css()
 {
 	echo '	<style type="text/css" media="screen">';
 	echo '		div.exclude_alert { font-size: 11px; }';
+	echo '		.new-admin-wp25 { font-size: 11px; background-color: #fff; }';
+	echo '		.new-admin-wp25 div.inner {  padding: 8px 12px; background-color: #EAF3FA; border: 1px solid #EAF3FA; -moz-border-radius: 3px; -khtml-border-bottom-radius: 3px; -webkit-border-bottom-radius: 3px; border-bottom-radius: 3px; }';
+	echo '		.new-admin-wp25 div.exclude_alert { padding-top: 5px; }';
+	echo '		.new-admin-wp25 div.exclude_alert em { font-style: normal; }';
 	echo '	</style>';
 }
 
@@ -229,7 +261,8 @@ function ep_hec_show_dbx( $to_show )
 // HOOK IT UP TO WORDPRESS
 
 // Add panels into the editing sidebar(s)
-add_action('dbx_page_sidebar', 'ep_admin_sidebar');
+add_action('dbx_page_sidebar', 'ep_admin_sidebar'); // Pre WP2.5
+add_action('submitpage_box', 'ep_admin_sidebar_wp25'); // Post WP 2.5
 
 // Set the exclusion when the post is saved
 add_action('save_post', 'ep_update_exclusions');

@@ -61,6 +61,9 @@ I'm simply noting requests & bug reports here, I've not necessarily looked into 
 
 == Screenshots ==
 
+There appears to be a [bug](http://wordpress.org/support/topic/167316?replies=1) in this plugin site, which is causing screenshots to
+not be updated. This may mean there's not a WordPress 2.5 screenshot below.
+
 1. WP 2.5 - Showing the control on the editing screen to exclude a page from the navigation
 2. WP 2.5 - Showing the control and warning for a page which is the child of an excluded page
 3. Pre WP 2.5 - Showing the control on the editing screen to exclude a page from the navigation

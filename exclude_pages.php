@@ -246,7 +246,6 @@ function ep_admin_sidebar_wp25()
 	echo '	</div><!-- #excludepagediv -->';
 }
 
-
 // Add some CSS into the HEAD element of the admin area
 function ep_admin_css()
 {
@@ -254,6 +253,8 @@ function ep_admin_css()
 	echo '		div.exclude_alert { font-size: 11px; }';
 	echo '		.new-admin-wp25 { font-size: 11px; background-color: #fff; }';
 	echo '		.new-admin-wp25 div.inner {  padding: 8px 12px; background-color: #EAF3FA; border: 1px solid #EAF3FA; -moz-border-radius: 3px; -khtml-border-bottom-radius: 3px; -webkit-border-bottom-radius: 3px; border-bottom-radius: 3px; }';
+	echo '		#ep_admin_meta_box div.inner {  padding: inherit; background-color: transparent; border: none; }';
+	echo '		#ep_admin_meta_box div.inner label { background-color: none; }';
 	echo '		.new-admin-wp25 div.exclude_alert { padding-top: 5px; }';
 	echo '		.new-admin-wp25 div.exclude_alert em { font-style: normal; }';
 	echo '	</style>';
@@ -266,29 +267,45 @@ function ep_hec_show_dbx( $to_show )
 	return $to_show;
 }
 
+// INIT FUNCTIONS
+
+function ep_init()
+{
+	// Call this function on the get_pages filter
+	// (get_pages filter appears to only be called on the "consumer" side of WP,
+	// the admin side must use another function to get the pages. So we're safe to
+	// remove these pages every time.)
+	add_filter('get_pages','ep_exclude_pages');
+}
+
+function ep_admin_init()
+{
+	// Add panels into the editing sidebar(s)
+	global $wp_version;
+	if ( version_compare( $wp_version, '2.7-beta', '>=' ) ) {
+		add_meta_box('ep_admin_meta_box', __('Exclude Pages'), 'ep_admin_sidebar_wp25', 'page', 'side', 'low');
+	} else {
+		add_action('dbx_page_sidebar', 'ep_admin_sidebar'); // Pre WP2.5
+		add_action('submitpage_box', 'ep_admin_sidebar_wp25'); // Post WP 2.5, pre WP 2.7
+	}
+
+	// Set the exclusion when the post is saved
+	add_action('save_post', 'ep_update_exclusions');
+
+	// Add some CSS to the admin header
+	add_action('admin_head', 'ep_admin_css');
+
+	// Call this function on our very own hec_show_dbx filter
+	// This filter is harmless to add, even if we don't have the 
+	// Hide Editor Clutter plugin installed as it's using a custom filter
+	// which won't be called except by the HEC plugin.
+	// Uncomment to show the control by default
+	// add_filter('hec_show_dbx','ep_hec_show_dbx');
+}
+
 // HOOK IT UP TO WORDPRESS
 
-// Add panels into the editing sidebar(s)
-add_action('dbx_page_sidebar', 'ep_admin_sidebar'); // Pre WP2.5
-add_action('submitpage_box', 'ep_admin_sidebar_wp25'); // Post WP 2.5
-
-// Set the exclusion when the post is saved
-add_action('save_post', 'ep_update_exclusions');
-
-// Call this function on the get_pages filter
-// (get_pages filter appears to only be called on the "consumer" side of WP,
-// the admin side must use another function to get the pages. So we're safe to
-// remove these pages every time.)
-add_filter('get_pages','ep_exclude_pages');
-
-// Add some CSS to the admin header
-add_action('admin_head', 'ep_admin_css');
-
-// Call this function on our very own hec_show_dbx filter
-// This filter is harmless to add, even if we don't have the 
-// Hide Editor Clutter plugin installed as it's using a custom filter
-// which won't be called except by the HEC plugin.
-// Uncomment to show the control by default
-// add_filter('hec_show_dbx','ep_hec_show_dbx');
+add_action( 'init', 'ep_init' );
+add_action( 'admin_init', 'ep_admin_init' )
 
 ?>

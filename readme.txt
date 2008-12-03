@@ -16,13 +16,24 @@ page navigation that users see on your site.
 
 Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
 
-=== Incompatible With ===
+== Incompatible With ==
 
-Exclude pages is incompatible with:
+Exclude Pages depends on some WordPress functionality which is used by default in the navigation. Some other plugins choose not to implement this default WordPress functionality, and so Exclude Pages will not work with these plugins.
+
+**Users:** If you find Exclude Pages is not working, please try removing any menu plugins one by one and see if/when it starts working.
+
+**Plugin & theme developers:** Exclude Pages depends on the WordPress filter "get_pages", if this filter is not implemented then the plugin will not work.
+
+Exclude pages is currently incompatible with:
 
 * [WP CSS Dropdown Menus](http://wordpress.org/extend/plugins/wordpress-css-drop-down-menu/) - This plugin doesn't use the standard WordPress functions to create it's menu, neither does it pass it's list of pages through the get_pages filter. A fix is required to the WP CSS Dropdown Menus plugin, please [contact me](http://www.simonwheatley.co.uk/contact-me/) if you're completely stuck and we can discuss possible solutions.
 
 == Change Log ==
+
+= (no version change) 2008/12/03 =
+
+* Amended the Plugin URI
+* Amended formatting on list of incompatible plugin, and added additional detail
 
 = v1.5 2008/11/03 =
 

@@ -16,29 +16,26 @@ page navigation that users see on your site.
 
 Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
 
-== Incompatible With ==
+=== Incompatible With ===
 
-Exclude Pages depends on some WordPress functionality which is used by default in the navigation. Some other plugins choose not to implement this default WordPress functionality, and so Exclude Pages will not work with these plugins.
+These plugins and themes don't use the standard WordPress functions to create it's menu, neither does it pass it's list of pages through the get_pages filter. To get them to work you will need to track down the bit of code in the theme/plugin which gets the pages and change it to apply the filter "get_pages" (I cannot be responsible for any unforseen effects of the changes you make, so please test thoroughly). The change to getting pages will probably look something like this:
 
-**Users:** If you find Exclude Pages is not working, please try removing any menu plugins one by one and see if/when it starts working.
+`$pages = apply_filters( 'get_pages', $pages );`
 
-**Plugin & theme developers:** Exclude Pages depends on the WordPress filter "get_pages", if this filter is not implemented then the plugin will not work.
+Please [contact me](http://www.simonwheatley.co.uk/contact-me/) if you're completely stuck and we can discuss possible solutions.
 
-Exclude pages is currently incompatible with:
+Exclude pages is incompatible with:
 
-* [WP CSS Dropdown Menus](http://wordpress.org/extend/plugins/wordpress-css-drop-down-menu/) - This plugin doesn't use the standard WordPress functions to create it's menu, neither does it pass it's list of pages through the get_pages filter. A fix is required to the WP CSS Dropdown Menus plugin, please [contact me](http://www.simonwheatley.co.uk/contact-me/) if you're completely stuck and we can discuss possible solutions.
+* [WP CSS Dropdown Menus plugin](http://wordpress.org/extend/plugins/wordpress-css-drop-down-menu/)
+* [Phantom theme](http://wordpress.org/extend/themes/phantom) - This theme
 
 == Change Log ==
-
-= (no version change) 2008/12/03 =
-
-* Amended the Plugin URI
-* Amended formatting on list of incompatible plugin, and added additional detail
 
 = v1.5 2008/11/03 =
 
 * ENHANCEMENT: Now compatible with WP 2.7-beta1
 * DOCS: Added a list of incompatible plugins
+* DOCS: Added a list of incompatible themes
 
 = v1.4 2008/01/02 =
 
@@ -82,9 +79,6 @@ I'm simply noting requests & bug reports here, I've not necessarily looked into 
 1. Create or edit a page, and enjoy the frisson of excitement as you exclude it from the navigation
 
 == Screenshots ==
-
-There appears to be a [bug](http://wordpress.org/support/topic/167316?replies=1) in this plugin site, which is causing screenshots to
-not be updated. This may mean there's not a WordPress 2.5 screenshot below.
 
 1. WP 2.5 - Showing the control on the editing screen to exclude a page from the navigation
 2. WP 2.5 - Showing the control and warning for a page which is the child of an excluded page

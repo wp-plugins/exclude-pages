@@ -4,7 +4,7 @@ Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
 Tags: get_pages, navigation, menu, exclude pages, hide pages
 Requires at least: 2.2.3
 Tested up to: 2.7.1
-Stable tag: 1.51
+Stable tag: 1.6
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
 page navigation that users see on your site.
@@ -13,6 +13,12 @@ page navigation that users see on your site.
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
 page navigation that users see on your site.
+
+It is possible to temporarily pause and resume the effect of Exclude Pages by using the new `<?php pause_exclude_pages(); ?>` and `<?php resume_exclude_pages(); ?>` templates tags. The following code will show a list of all pages in your site, even those normally hidden:
+
+`<?php pause_exclude_pages(); ?>
+<?php wp_list_pages('title_li=<h2>Pages</h2>' ); ?>
+<?php resume_exclude_pages(); ?>`
 
 Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
 
@@ -30,6 +36,10 @@ Exclude pages is incompatible with:
 * [Phantom theme](http://wordpress.org/extend/themes/phantom) - This theme
 
 == Change Log ==
+
+= v1.6 2009/6/8 =
+
+* ENHANCEMENT: You can now turn the Exclude Pages functionality off before showing navigation which you want to be comprehensive (and show pages you've normally hidden). This is done with the new `<?php pause_exclude_pages(); ?>` and `<?php resume_exclude_pages(); ?>` templates tags.
 
 = v1.51 2009/4/23 =
 

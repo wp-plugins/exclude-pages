@@ -39,6 +39,10 @@ Exclude pages is incompatible with:
 
 == Change Log ==
 
+= v1.7 2009/7/29 =
+
+* ENHANCEMENT: You can now turn the Exclude Pages functionality off in the admin area through use of a filter (this is mainly of advantage to other plugin and theme author).
+
 = v1.6 2009/6/8 =
 
 * ENHANCEMENT: You can now turn the Exclude Pages functionality off before showing navigation which you want to be comprehensive (and show pages you've normally hidden). This is done with the new `<?php pause_exclude_pages(); ?>` and `<?php resume_exclude_pages(); ?>` templates tags.

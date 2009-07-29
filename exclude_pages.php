@@ -3,7 +3,7 @@
 Plugin Name: Exclude Pages from Navigation
 Plugin URI: http://wordpress.org/extend/plugins/exclude-pages/
 Description: Provides a checkbox on the editing page which you can check to exclude pages from the primary navigation. IMPORTANT NOTE: This will remove the pages from any "consumer" side page listings, which may not be limited to your page navigation listings.
-Version: 1.6
+Version: 1.7
 Author: Simon Wheatley
 Author URI: http://simonwheatley.co.uk/wordpress/
 
@@ -39,10 +39,11 @@ function ep_exclude_pages( & $pages )
 	// If the URL includes "wp-admin", just return the unaltered list
 	// This constant, WP_ADMIN, only came into WP on 2007-12-19 17:56:16 rev 6412, i.e. not something we can rely upon unfortunately.
 	// May as well check it though.
-	if ( defined( 'WP_ADMIN' ) && WP_ADMIN == true ) return $pages;
-	// Fall back to checking the URL... let's hope they haven't got a page called wp-admin (probably not)
+	// Also check the URL... let's hope they haven't got a page called wp-admin (probably not)
 	// SWTODO: Actually, you can create a page with an address of wp-admin (which is then inaccessible), I consider this a bug in WordPress (which I may file a report for, and patch, another time).
-	if ( strpos( $_SERVER[ 'PHP_SELF' ], 'wp-admin' ) !== false ) return $pages;
+	$bail_out = ( ( defined( 'WP_ADMIN' ) && WP_ADMIN == true ) || ( strpos( $_SERVER[ 'PHP_SELF' ], 'wp-admin' ) !== false ) );
+	$bail_out = apply_filters( 'ep_admin_bail_out', $bail_out );
+	if ( $bail_out ) return $pages;
 	$excluded_ids = ep_get_excluded_ids();
 	$length = count($pages);
 	// Ensure we catch all descendant pages, so that if a parent

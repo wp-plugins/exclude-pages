@@ -3,7 +3,7 @@
 Plugin Name: Exclude Pages from Navigation
 Plugin URI: http://wordpress.org/extend/plugins/exclude-pages/
 Description: Provides a checkbox on the editing page which you can check to exclude pages from the primary navigation. IMPORTANT NOTE: This will remove the pages from any "consumer" side page listings, which may not be limited to your page navigation listings.
-Version: 1.7
+Version: 1.8
 Author: Simon Wheatley
 Author URI: http://simonwheatley.co.uk/wordpress/
 
@@ -34,7 +34,7 @@ define('EP_OPTION_SEP', ',');
 
 // Take the pages array, and return the pages array without the excluded pages
 // Doesn't do this when in the admin area
-function ep_exclude_pages( & $pages )
+function ep_exclude_pages( $pages )
 {
 	// If the URL includes "wp-admin", just return the unaltered list
 	// This constant, WP_ADMIN, only came into WP on 2007-12-19 17:56:16 rev 6412, i.e. not something we can rely upon unfortunately.

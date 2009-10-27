@@ -82,7 +82,7 @@ function ep_exclude_pages( $pages )
 
 // Recurse down an ancestor chain, checking if one is excluded
 // Returns the ID of the "nearest" excluded ancestor
-function ep_ancestor_excluded( & $page, & $excluded_ids, & $pages )
+function ep_ancestor_excluded( $page, $excluded_ids, $pages )
 {
 	$parent = & ep_get_page( $page->post_parent, $pages );
 	// Is it excluded?
@@ -96,7 +96,7 @@ function ep_ancestor_excluded( & $page, & $excluded_ids, & $pages )
 }
 
 // Return the portion of the $pages array which refers to the ID passed as $page_id
-function ep_get_page( $page_id, & $pages )
+function ep_get_page( $page_id, $pages )
 {
 	// PHP 5 would be much nicer here, we could use foreach by reference, ah well.
 	$length = count($pages);

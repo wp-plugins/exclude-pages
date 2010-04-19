@@ -3,8 +3,8 @@ Contributors: simonwheatley
 Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
 Tags: get_pages, navigation, menu, exclude pages, hide pages
 Requires at least: 2.2.3
-Tested up to: 2.8.4
-Stable tag: 1.8
+Tested up to: 2.9.2
+Stable tag: 1.8.1
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
 page navigation that users see on your site.
@@ -38,6 +38,14 @@ Exclude pages is incompatible with:
 * [Phantom theme](http://wordpress.org/extend/themes/phantom) - This theme
 
 == Change Log ==
+
+= v1.8.1 2010/4/19 =
+
+* BUGFIX: Check for existence of parent object before attempting to use it. (Thanks to Robert Kosara for the bug report.)
+
+= v1.8 ????/??/?? =
+
+Ooops. Forgot to add notes.
 
 = v1.7 2009/7/29 =
 

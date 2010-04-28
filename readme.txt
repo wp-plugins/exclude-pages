@@ -6,13 +6,11 @@ Requires at least: 2.2.3
 Tested up to: 2.9.2
 Stable tag: 1.8.1
 
-This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
-page navigation that users see on your site.
+This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the page navigation that users see on your site.
 
 == Description ==
 
-This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the 
-page navigation that users see on your site.
+This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the page navigation that users see on your site.
 
 It is possible to temporarily pause and resume the effect of Exclude Pages by using the new `<?php pause_exclude_pages(); ?>` and `<?php resume_exclude_pages(); ?>` templates tags. The following code will show a list of all pages in your site, even those normally hidden:
 

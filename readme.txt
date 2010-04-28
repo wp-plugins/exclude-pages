@@ -24,7 +24,7 @@ Other plugin authors: the plugin does not operate on wp_list_pages while the use
 
 Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
 
-=== Incompatible With ===
+== Incompatible With ==
 
 These plugins and themes don't use the standard WordPress functions to create it's menu, neither does it pass it's list of pages through the get_pages filter. To get them to work you will need to track down the bit of code in the theme/plugin which gets the pages and change it to apply the filter "get_pages" (I cannot be responsible for any unforseen effects of the changes you make, so please test thoroughly). The change to getting pages will probably look something like this:
 
@@ -43,9 +43,9 @@ Exclude pages is incompatible with:
 
 * BUGFIX: Check for existence of parent object before attempting to use it. (Thanks to Robert Kosara for the bug report.)
 
-= v1.8 ????/??/?? =
+= v1.8 2009/10/27 =
 
-Ooops. Forgot to add notes.
+* BUGFIX: PHP 5.3 doesn't like the fact that parameters marked as passed by reference as passed as value. Params now not marked as passed by ref.
 
 = v1.7 2009/7/29 =
 

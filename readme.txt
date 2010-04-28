@@ -12,19 +12,23 @@ This plugin adds a checkbox, “include this page in menus”, uncheck this to e
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the page navigation that users see on your site.
 
+Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
+
+== Advanced Usage ==
+
 It is possible to temporarily pause and resume the effect of Exclude Pages by using the new `<?php pause_exclude_pages(); ?>` and `<?php resume_exclude_pages(); ?>` templates tags. The following code will show a list of all pages in your site, even those normally hidden:
 
 `<?php pause_exclude_pages(); ?>
 <?php wp_list_pages('title_li=<h2>Pages</h2>' ); ?>
 <?php resume_exclude_pages(); ?>`
 
-Other plugin authors: the plugin does not operate on wp_list_pages while the user is on an admin page, if this is an issue you can take advantage of the `ep_admin_bail_out` filter and create a filter function which returns false to allow Exclude Pages to operate in the admin area.
+Note to other plugin authors:
 
-Any issues: [contact me](http://www.simonwheatley.co.uk/contact-me/).
+The plugin does not operate on wp_list_pages while the user is on an admin page, if this is an issue you can take advantage of the `ep_admin_bail_out` filter and create a filter function which returns false to allow Exclude Pages to operate in the admin area.
 
-== Incompatible With ==
+Another note:
 
-These plugins and themes don't use the standard WordPress functions to create it's menu, neither does it pass it's list of pages through the get_pages filter. To get them to work you will need to track down the bit of code in the theme/plugin which gets the pages and change it to apply the filter "get_pages" (I cannot be responsible for any unforseen effects of the changes you make, so please test thoroughly). The change to getting pages will probably look something like this:
+If your plugins or themes don't use the standard WordPress functions to create their menus then they won't work. To get them to work you will need to track down the bit of code in the theme/plugin which gets the pages and change it to apply the filter "get_pages" (I cannot be responsible for any unforseen effects of the changes you make, so please test thoroughly). The change to getting pages will probably look something like this:
 
 `$pages = apply_filters( 'get_pages', $pages );`
 

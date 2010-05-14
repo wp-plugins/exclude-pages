@@ -22,10 +22,6 @@ It is possible to temporarily pause and resume the effect of Exclude Pages by us
 <?php wp_list_pages('title_li=<h2>Pages</h2>' ); ?>
 <?php resume_exclude_pages(); ?>`
 
-Translation:
-
-Version 1.8.2 (released 2010/5/14) includes the facility for Exclude Pages to be translated into languages other than English. Please [contact me](http://www.simonwheatley.co.uk/contact-me/) if you want to translate Exclude Pages into your language.
-
 Note to other plugin authors:
 
 The plugin does not operate on wp_list_pages while the user is on an admin page, if this is an issue you can take advantage of the `ep_admin_bail_out` filter and create a filter function which returns false to allow Exclude Pages to operate in the admin area.
@@ -59,7 +55,7 @@ Simon
 
 * DROPPED SUPPORT FOR WORDPRESS VERSIONS PRIOR TO VERSION 2.7
 * BUGFIX: Everything was reporting that it was excluded by an ancestor for some reason. Crazy. Fixed now.
-* LOCALISATION: Added POT file! Woop!
+* LOCALISATION: Added POT file! Woo hoo!
 
 = v1.8.1 2010/4/19 =
 

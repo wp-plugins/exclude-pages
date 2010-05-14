@@ -31,6 +31,8 @@ define('EP_PLUGIN_DIR', dirname(__FILE__));
 define('EP_OPTION_NAME', 'ep_exclude_pages');
 // Separator for the string of IDs stored in the option value
 define('EP_OPTION_SEP', ',');
+// The textdomain for the WP i18n gear
+define( 'EP_TD', 'exclude-pages' );
 
 // Take the pages array, and return the pages array without the excluded pages
 // Doesn't do this when in the admin area
@@ -212,7 +214,6 @@ function ep_set_option( $name, $value, $description ) {
  **/
 function ep_admin_sidebar_wp25() {
 	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
-	error_log( "NEA: " . $nearest_excluded_ancestor . " " . gettype( $nearest_excluded_ancestor ) );
 	echo '	<div id="excludepagediv" class="new-admin-wp25">';
 	echo '		<div class="outer"><div class="inner">';
 	echo '		<label for="ep_this_page_included" class="selectit">';
@@ -223,11 +224,11 @@ function ep_admin_sidebar_wp25() {
 	if ( ep_this_page_included() ) 
 		echo 'checked="checked"';
 	echo ' />';
-	echo '			'.__( 'Include this page in user menus', 'exclude-pages' ).'</label>';
+	echo '			'.__( 'Include this page in user menus', EP_TD ).'</label>';
 	echo '		<input type="hidden" name="ep_ctrl_present" value="1" />';
 	if ( $nearest_excluded_ancestor !== false ) {
 		echo '<div class="exclude_alert"><em>';
-		echo sprintf( __( 'N.B. An ancestor of this page is excluded, so this page is too (<a href="%1$s" title="%2$s">edit ancestor</a>).', 'exclude-pages'), "post.php?action=edit&amp;post=$nearest_excluded_ancestor", __( 'edit the excluded ancestor', 'exclude-pages' ) );
+		echo sprintf( __( 'N.B. An ancestor of this page is excluded, so this page is too (<a href="%1$s" title="%2$s">edit ancestor</a>).', EP_TD), "post.php?action=edit&amp;post=$nearest_excluded_ancestor", __( 'edit the excluded ancestor', EP_TD ) );
 		echo '</em></div>';
 	}
 	echo '	</div><!-- .inner --></div><!-- .outer -->';
@@ -276,12 +277,17 @@ function ep_init() {
 	// the admin side must use another function to get the pages. So we're safe to
 	// remove these pages every time.)
 	add_filter('get_pages','ep_exclude_pages');
+	// Load up the translation gear
+	$locale = get_locale();
+	$folder = rtrim( basename( dirname( __FILE__ ) ), '/' );
+	$mo_file = trailingslashit( WP_PLUGIN_DIR ) . "$folder/locale/" . EP_TD . "-$locale.mo";
+	load_textdomain( EP_TD, $mo_file );
 }
 
 function ep_admin_init() {
 	// Add panels into the editing sidebar(s)
 	global $wp_version;
-	add_meta_box('ep_admin_meta_box', __( 'Exclude Pages', 'exclude-pages' ), 'ep_admin_sidebar_wp25', 'page', 'side', 'low');
+	add_meta_box('ep_admin_meta_box', __( 'Exclude Pages', EP_TD ), 'ep_admin_sidebar_wp25', 'page', 'side', 'low');
 
 	// Set the exclusion when the post is saved
 	add_action('save_post', 'ep_update_exclusions');

@@ -34,8 +34,7 @@ define('EP_OPTION_SEP', ',');
 
 // Take the pages array, and return the pages array without the excluded pages
 // Doesn't do this when in the admin area
-function ep_exclude_pages( $pages )
-{
+function ep_exclude_pages( $pages ) {
 	// If the URL includes "wp-admin", just return the unaltered list
 	// This constant, WP_ADMIN, only came into WP on 2007-12-19 17:56:16 rev 6412, i.e. not something we can rely upon unfortunately.
 	// May as well check it though.
@@ -82,8 +81,7 @@ function ep_exclude_pages( $pages )
 
 // Recurse down an ancestor chain, checking if one is excluded
 // Returns the ID of the "nearest" excluded ancestor
-function ep_ancestor_excluded( $page, $excluded_ids, $pages )
-{
+function ep_ancestor_excluded( $page, $excluded_ids, $pages ) {
 	$parent = & ep_get_page( $page->post_parent, $pages );
 	// Is there a parent?
 	if ( ! $parent ) {
@@ -100,8 +98,7 @@ function ep_ancestor_excluded( $page, $excluded_ids, $pages )
 }
 
 // Return the portion of the $pages array which refers to the ID passed as $page_id
-function ep_get_page( $page_id, $pages )
-{
+function ep_get_page( $page_id, $pages ) {
 	// PHP 5 would be much nicer here, we could use foreach by reference, ah well.
 	$length = count($pages);
 	for ( $i=0; $i<$length; $i++ ) {
@@ -117,8 +114,7 @@ function ep_get_page( $page_id, $pages )
 // returns true if NOT excluded (i.e. included)
 // returns false is it IS excluded.
 // (Tricky this upside down flag business.)
-function ep_this_page_included()
-{
+function ep_this_page_included() {
 	global $post_ID;
 	// New post? Must be included then.
 	if ( ! $post_ID ) return true;
@@ -134,8 +130,7 @@ function ep_this_page_included()
 // Check the ancestors for the page we're editing (defined by 
 // global $post_ID var), return the ID if the nearest one which
 // is excluded (if any);
-function ep_nearest_excluded_ancestor()
-{
+function ep_nearest_excluded_ancestor() {
 	global $post_ID, $wpdb;
 	// New post? No problem.
 	if ( ! $post_ID ) return false;
@@ -148,8 +143,7 @@ function ep_nearest_excluded_ancestor()
 	return ep_ancestor_excluded( $parent, $excluded_ids, $pages );
 }
 
-function ep_get_excluded_ids()
-{
+function ep_get_excluded_ids() {
 	$exclude_ids_str = get_option( EP_OPTION_NAME );
 	// No excluded IDs? Return an empty array
 	if ( empty($exclude_ids_str) ) return array();
@@ -163,8 +157,7 @@ function ep_get_excluded_ids()
 // don't want to have to retrieve meta for every page in order to
 // determine if it's to be excluded. Storing all the exclusions in
 // one row seems more sensible.
-function ep_update_exclusions( $post_ID )
-{
+function ep_update_exclusions( $post_ID ) {
 	// Bang (!) to reverse the polarity of the boolean, turning include into exclude
 	$exclude_this_page = ! (bool) $_POST['ep_this_page_included'];
 	// SWTODO: Also check for a hidden var, which confirms that this checkbox was present
@@ -193,8 +186,7 @@ function ep_update_exclusions( $post_ID )
 }
 
 // Take an option, delete it if it exists, then add it.
-function ep_set_option( $name, $value, $description )
-{
+function ep_set_option( $name, $value, $description ) {
 	// Delete option	
 	delete_option($name);
 	// Insert option
@@ -203,8 +195,7 @@ function ep_set_option( $name, $value, $description )
 
 // Pre WP2.5
 // Add some HTML for the DBX sidebar control into the edit page page
-function ep_admin_sidebar()
-{
+function ep_admin_sidebar() {
 	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
 	echo '	<fieldset id="excludepagediv" class="dbx-box">';
 	echo '		<h3 class="dbx-handle">'.__('Navigation').'</h3>';
@@ -229,8 +220,7 @@ function ep_admin_sidebar()
 
 // Post WP 2.5
 // Add some HTML below the submit box
-function ep_admin_sidebar_wp25()
-{
+function ep_admin_sidebar_wp25() {
 	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
 	echo '	<div id="excludepagediv" class="new-admin-wp25">';
 	echo '		<div class="outer"><div class="inner">';
@@ -254,8 +244,7 @@ function ep_admin_sidebar_wp25()
 }
 
 // Add some CSS into the HEAD element of the admin area
-function ep_admin_css()
-{
+function ep_admin_css() {
 	echo '	<style type="text/css" media="screen">';
 	echo '		div.exclude_alert { font-size: 11px; }';
 	echo '		.new-admin-wp25 { font-size: 11px; background-color: #fff; }';
@@ -268,28 +257,24 @@ function ep_admin_css()
 }
 
 // Add our ctrl to the list of controls which AREN'T hidden
-function ep_hec_show_dbx( $to_show )
-{
+function ep_hec_show_dbx( $to_show ) {
 	array_push( $to_show, 'excludepagediv' );
 	return $to_show;
 }
 
 // PAUSE & RESUME FUNCTIONS
 
-function pause_exclude_pages()
-{
+function pause_exclude_pages() {
 	remove_filter('get_pages','ep_exclude_pages');
 }
 
-function resume_exclude_pages()
-{
+function resume_exclude_pages() {
 	add_filter('get_pages','ep_exclude_pages');
 }
 
 // INIT FUNCTIONS
 
-function ep_init()
-{
+function ep_init() {
 	// Call this function on the get_pages filter
 	// (get_pages filter appears to only be called on the "consumer" side of WP,
 	// the admin side must use another function to get the pages. So we're safe to
@@ -297,8 +282,7 @@ function ep_init()
 	add_filter('get_pages','ep_exclude_pages');
 }
 
-function ep_admin_init()
-{
+function ep_admin_init() {
 	// Add panels into the editing sidebar(s)
 	global $wp_version;
 	if ( version_compare( $wp_version, '2.7-beta', '>=' ) ) {

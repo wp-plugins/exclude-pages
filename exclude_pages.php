@@ -3,7 +3,7 @@
 Plugin Name: Exclude Pages from Navigation
 Plugin URI: http://wordpress.org/extend/plugins/exclude-pages/
 Description: Provides a checkbox on the editing page which you can check to exclude pages from the primary navigation. IMPORTANT NOTE: This will remove the pages from any "consumer" side page listings, which may not be limited to your page navigation listings.
-Version: 1.8.1
+Version: 1.8.2
 Author: Simon Wheatley
 Author URI: http://simonwheatley.co.uk/wordpress/
 
@@ -79,25 +79,36 @@ function ep_exclude_pages( $pages ) {
 	return $pages;
 }
 
-// Recurse down an ancestor chain, checking if one is excluded
-// Returns the ID of the "nearest" excluded ancestor
+/**
+ * Recurse down an ancestor chain, checking if one is excluded
+ *
+ * @param  
+ * @return boolean|int The ID of the "nearest" excluded ancestor, otherwise false
+ * @author Simon Wheatley
+ **/
 function ep_ancestor_excluded( $page, $excluded_ids, $pages ) {
 	$parent = & ep_get_page( $page->post_parent, $pages );
 	// Is there a parent?
-	if ( ! $parent ) {
-		return;
-	}
+	if ( ! $parent )
+		return false;
 	// Is it excluded?
-	if ( in_array( $parent->ID, $excluded_ids ) ) {
-		return $parent->ID;
-	}
+	if ( in_array( $parent->ID, $excluded_ids ) )
+		return (int) $parent->ID;
 	// Is it the homepage?
-	if ( $parent->ID == 0 ) return false;
+	if ( $parent->ID == 0 )
+		return false;
 	// Otherwise we have another ancestor to check
 	return ep_ancestor_excluded( $parent, $excluded_ids, $pages );
 }
 
-// Return the portion of the $pages array which refers to the ID passed as $page_id
+/**
+ * {no description}
+ *
+ * @param int $page_id The ID of the WP page to search for
+ * @param array $pages An array of WP page objects
+ * @return boolean|object the page from the $pages array which corresponds to the $page_id
+ * @author Simon Wheatley
+ **/
 function ep_get_page( $page_id, $pages ) {
 	// PHP 5 would be much nicer here, we could use foreach by reference, ah well.
 	$length = count($pages);
@@ -182,7 +193,7 @@ function ep_update_exclusions( $post_ID ) {
 		if ( $index !== false ) unset( $excluded_ids[$index] );
 	}
 	$excluded_ids_str = implode( EP_OPTION_SEP, $excluded_ids );
-	ep_set_option( EP_OPTION_NAME, $excluded_ids_str, "Comma separated list of post and page IDs to exclude when returning pages from the get_pages function." );
+	ep_set_option( EP_OPTION_NAME, $excluded_ids_str, __( "Comma separated list of post and page IDs to exclude when returning pages from the get_pages function.", "exclude-pages" ) );
 }
 
 // Take an option, delete it if it exists, then add it.
@@ -193,35 +204,15 @@ function ep_set_option( $name, $value, $description ) {
 	add_option($name, $value, $description);
 }
 
-// Pre WP2.5
-// Add some HTML for the DBX sidebar control into the edit page page
-function ep_admin_sidebar() {
-	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
-	echo '	<fieldset id="excludepagediv" class="dbx-box">';
-	echo '		<h3 class="dbx-handle">'.__('Navigation').'</h3>';
-	echo '		<div class="dbx-content">';
-	echo '		<label for="ep_this_page_included" class="selectit">';
-	echo '		<input ';
-	echo '			type="checkbox" ';
-	echo '			name="ep_this_page_included" ';
-	echo '			id="ep_this_page_included" ';
-	if ( ep_this_page_included() ) echo 'checked="checked"';
-	echo ' />';
-	echo '			'.__('Include this page in menus').'</label>';
-	echo '		<input type="hidden" name="ep_ctrl_present" value="1" />';
-	if ( $nearest_excluded_ancestor !== false ) {
-		echo '<div class="exclude_alert">';
-		echo __('An ancestor of this page is excluded, so this page is too. ');
-		echo '<a href="page.php?action=edit&amp;post='.$nearest_excluded_ancestor.'"';
-		echo ' title="'.__('edit the excluded ancestor').'">'.__('Edit ancestor').'</a>.</div>';
-	}
-	echo '	</div></fieldset>';
-}
-
-// Post WP 2.5
-// Add some HTML below the submit box
+/**
+ * Callback function for the metabox on the page edit screen.
+ *
+ * @return void
+ * @author Simon Wheatley
+ **/
 function ep_admin_sidebar_wp25() {
 	$nearest_excluded_ancestor = ep_nearest_excluded_ancestor();
+	error_log( "NEA: " . $nearest_excluded_ancestor . " " . gettype( $nearest_excluded_ancestor ) );
 	echo '	<div id="excludepagediv" class="new-admin-wp25">';
 	echo '		<div class="outer"><div class="inner">';
 	echo '		<label for="ep_this_page_included" class="selectit">';
@@ -229,21 +220,26 @@ function ep_admin_sidebar_wp25() {
 	echo '			type="checkbox" ';
 	echo '			name="ep_this_page_included" ';
 	echo '			id="ep_this_page_included" ';
-	if ( ep_this_page_included() ) echo 'checked="checked"';
+	if ( ep_this_page_included() ) 
+		echo 'checked="checked"';
 	echo ' />';
-	echo '			'.__('Include this page in user menus').'</label>';
+	echo '			'.__( 'Include this page in user menus', 'exclude-pages' ).'</label>';
 	echo '		<input type="hidden" name="ep_ctrl_present" value="1" />';
 	if ( $nearest_excluded_ancestor !== false ) {
 		echo '<div class="exclude_alert"><em>';
-		echo __('N.B. An ancestor of this page is excluded, so this page is too. ');
-		echo '<a href="page.php?action=edit&amp;post='.$nearest_excluded_ancestor.'"';
-		echo ' title="'.__('edit the excluded ancestor').'">'.__('Edit ancestor').'</a>.</em></div>';
+		echo sprintf( __( 'N.B. An ancestor of this page is excluded, so this page is too (<a href="%1$s" title="%2$s">edit ancestor</a>).', 'exclude-pages'), "post.php?action=edit&amp;post=$nearest_excluded_ancestor", __( 'edit the excluded ancestor', 'exclude-pages' ) );
+		echo '</em></div>';
 	}
 	echo '	</div><!-- .inner --></div><!-- .outer -->';
 	echo '	</div><!-- #excludepagediv -->';
 }
 
-// Add some CSS into the HEAD element of the admin area
+/**
+ * Hooks the WordPress admin_head action to inject some CSS.
+ *
+ * @return void
+ * @author Simon Wheatley
+ **/
 function ep_admin_css() {
 	echo '	<style type="text/css" media="screen">';
 	echo '		div.exclude_alert { font-size: 11px; }';
@@ -285,12 +281,7 @@ function ep_init() {
 function ep_admin_init() {
 	// Add panels into the editing sidebar(s)
 	global $wp_version;
-	if ( version_compare( $wp_version, '2.7-beta', '>=' ) ) {
-		add_meta_box('ep_admin_meta_box', __('Exclude Pages'), 'ep_admin_sidebar_wp25', 'page', 'side', 'low');
-	} else {
-		add_action('dbx_page_sidebar', 'ep_admin_sidebar'); // Pre WP2.5
-		add_action('submitpage_box', 'ep_admin_sidebar_wp25'); // Post WP 2.5, pre WP 2.7
-	}
+	add_meta_box('ep_admin_meta_box', __( 'Exclude Pages', 'exclude-pages' ), 'ep_admin_sidebar_wp25', 'page', 'side', 'low');
 
 	// Set the exclusion when the post is saved
 	add_action('save_post', 'ep_update_exclusions');

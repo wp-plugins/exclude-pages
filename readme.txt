@@ -41,6 +41,10 @@ Exclude pages is incompatible with:
 
 == Change Log ==
 
+= v1.8.3 2010/5/19 =
+
+* LOCALISATION: Polish translation now available
+
 = v1.8.2 2010/5/14 =
 
 Dear Non-English Exclude Pages Users,

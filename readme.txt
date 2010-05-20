@@ -22,6 +22,8 @@ It is possible to temporarily pause and resume the effect of Exclude Pages by us
 <?php wp_list_pages('title_li=<h2>Pages</h2>' ); ?>
 <?php resume_exclude_pages(); ?>`
 
+You can also get an array the IDs of the pages which are excluded by calling the function `ep_get_excluded_ids();`, you can then use these IDs as you wish (e.g. feed them into raw MySQL queries).
+
 Note to other plugin authors:
 
 The plugin does not operate on wp_list_pages while the user is on an admin page, if this is an issue you can take advantage of the `ep_admin_bail_out` filter and create a filter function which returns false to allow Exclude Pages to operate in the admin area.

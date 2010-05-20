@@ -43,7 +43,7 @@ Exclude pages is incompatible with:
 
 = v1.8.3 2010/5/20 =
 
-* LOCALISATION: Polish translation courtesy of [Pawel](www.spin.siedlce.pl)
+* LOCALISATION: Polish translation courtesy of [Pawel, Siedlecki Portal Informacyjnie Najlepszy](http://www.spin.siedlce.pl)
 * LOCALISATION: German translation courtesy of [Meini, Utech Computer Solutions](http://utechworld.com)
 
 = v1.8.2 2010/5/14 =

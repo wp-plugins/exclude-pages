@@ -41,9 +41,10 @@ Exclude pages is incompatible with:
 
 == Change Log ==
 
-= v1.8.3 2010/5/19 =
+= v1.8.3 2010/5/20 =
 
-* LOCALISATION: Polish translation now available
+* LOCALISATION: Polish translation courtesy of Pawel
+* LOCALISATION: German translation courtesy of [Meini, Utech Computer Solutions](http://utechworld.com)
 
 = v1.8.2 2010/5/14 =
 

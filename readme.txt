@@ -43,6 +43,10 @@ Exclude pages is incompatible with:
 
 == Change Log ==
 
+= v1.8.4 2010/5/21 =
+
+* LOCALISATION: Italian translation courtesy of [Gianni Diurno](http://gidibao.net/index.php/portfolio/)
+
 = v1.8.3 2010/5/20 =
 
 * LOCALISATION: Polish translation courtesy of [Pawel, Siedlecki Portal Informacyjnie Najlepszy](http://www.spin.siedlce.pl)

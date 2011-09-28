@@ -43,6 +43,10 @@ Exclude pages is incompatible with:
 
 == Change Log ==
 
+= v1.92 (development) =
+
+* BUGFIX: Fix deprecated notice when WP_DEBUG is true, thanks [hansfordmc](http://wordpress.org/support/topic/plugin-exclude-pages-cant-update-pages)
+
 = v1.91 2011/08/26 =
 
 * BUGFIX: Prevent notice from appearing, thanks [Ray](http://wordpress.org/support/topic/notice-undefined-index-1)

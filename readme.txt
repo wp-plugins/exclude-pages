@@ -1,10 +1,10 @@
 === Exclude Pages ===
 Contributors: simonwheatley
-Donate link: http://www.simonwheatley.co.uk/wordpress-plugins/
+Donate link: http://www.simonwheatley.co.uk/wordpress/
 Tags: get_pages, navigation, menu, exclude pages, hide pages
 Requires at least: 2.2.3
-Tested up to: 3.2.1
-Stable tag: 1.91
+Tested up to: 3.3
+Stable tag: 1.92
 
 This plugin adds a checkbox, “include this page in menus”, uncheck this to exclude pages from the page navigation that users see on your site.
 
@@ -43,9 +43,10 @@ Exclude pages is incompatible with:
 
 == Change Log ==
 
-= v1.92 (development) =
+= v1.92 =
 
 * BUGFIX: Fix deprecated notice when WP_DEBUG is true, thanks [hansfordmc](http://wordpress.org/support/topic/plugin-exclude-pages-cant-update-pages)
+* Tested up to WordPress v3.3
 
 = v1.91 2011/08/26 =
 
